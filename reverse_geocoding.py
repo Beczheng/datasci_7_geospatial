@@ -16,17 +16,17 @@ google_response = []
 
 for coord in df_s['GEO']: 
 
+    reverse_geocode_url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
+    
     location_raw = coord
     location_clean = urllib.parse.quote(location_raw)
 
-    reverse_geocode_url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='
-    step1 = reverse_geocode_url + location_clean + '&key=' + API
+    url_request = reverse_geocode_url + location_clean + '&key=' + API
 
-    response = requests.get(step1)
+    response = requests.get(url_request)
     response_dictionary = response.json()
 
     address = response_dictionary['results'][0]['formatted_address']
-
 
     final = {'address': address, 'coordinates': coord}
     google_response.append(final)

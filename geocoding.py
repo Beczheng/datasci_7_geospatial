@@ -21,22 +21,19 @@ for address in df_s['GEO']:
     location_raw = address
     location_clean = urllib.parse.quote(location_raw)
 
-    url_request_part1 = search + location_clean + '&key=' + API
+    url_request = search + location_clean + '&key=' + API
 
-    response = requests.get(url_request_part1)
+    response = requests.get(url_request)
     response_dictionary = response.json()
 
-    if 'results' in response_dictionary and response_dictionary['results']:
-        lat_long = response_dictionary['results'][0]['geometry']['location']
-        lat_response = lat_long['lat']
-        lng_response = lat_long['lng']
+    lat_long = response_dictionary['results'][0]['geometry']['location']
+    lat_response = lat_long['lat']
+    lng_response = lat_long['lng']
 
-        final = {'address': address, 'lat': lat_response, 'lon': lng_response}
-        google_response.append(final)
+    final = {'address': address, 'lat': lat_response, 'lon': lng_response}
+    google_response.append(final)
 
-        print(f'....finished with {address}')
-    else:
-        print(f'No results for {address}')
+    print(f'....finished with {address}')
 
 df_geo = pd.DataFrame(google_response)
 
